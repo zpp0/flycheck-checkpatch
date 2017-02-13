@@ -1,6 +1,12 @@
-;;; flycheck-checkpatch.el -- Flyckeck support for checkpatch.pl tool
+;;; flycheck-checkpatch.el --- Flyckeck support for checkpatch.pl tool
 
 ;; Copyright (c) 2016 Alexander Yarygin <yarygin.alexander@gmail.com>
+
+;; Author: Alexander Yarygin <yarygin.alexander@gmail.com>
+;; Maintainer: Alexander Yarygin <yarygin.alexander@gmail.com>
+;; Version: 0.1
+;; Homepage: https://github.com/zpp0/flycheck-checkpatch
+;; Package-Requires: ((emacs "25"))
 
 ;; This file is not part of GNU Emacs.
 
@@ -32,17 +38,17 @@
 
 (require 'flycheck)
 
-(defvar flycheck-scripts-directory "scripts")
+(defvar flycheck-checkpatch-scripts-directory "scripts")
 
 (defun flycheck-checkpatch-scripts-directory (&optional checker)
   (and (buffer-file-name)
        (locate-dominating-file (buffer-file-name)
-                               flycheck-scripts-directory)))
+                               flycheck-checkpatch-scripts-directory)))
 
 (defun flycheck-checkpatch-set-executable ()
   (when-let ((directory (flycheck-checkpatch-scripts-directory)))
     (setq-local flycheck-checkpatch-executable
-		(concat directory flycheck-scripts-directory "/checkpatch.pl"))))
+		(concat directory flycheck-checkpatch-scripts-directory "/checkpatch.pl"))))
 
 (flycheck-define-checker checkpatch
   "The Linux kernel (or qemu) checkpatch.pl checker"
