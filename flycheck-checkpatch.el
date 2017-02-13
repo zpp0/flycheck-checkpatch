@@ -1,6 +1,12 @@
-;;; flycheck-checkpatch.el -- Flyckeck support for checkpatch.pl tool
+;;; flycheck-checkpatch.el --- Flyckeck support for checkpatch.pl tool
 
 ;; Copyright (c) 2016 Alexander Yarygin <yarygin.alexander@gmail.com>
+
+;; Author: Alexander Yarygin <yarygin.alexander@gmail.com>
+;; Maintainer: Alexander Yarygin <yarygin.alexander@gmail.com>
+;; Version: 0.1
+;; Homepage: https://github.com/zpp0/flycheck-checkpatch
+;; Package-Requires: ((emacs "25"))
 
 ;; This file is not part of GNU Emacs.
 
