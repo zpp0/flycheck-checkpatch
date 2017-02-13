@@ -32,17 +32,17 @@
 
 (require 'flycheck)
 
-(defvar flycheck-scripts-directory "scripts")
+(defvar flycheck-checkpatch-scripts-directory "scripts")
 
 (defun flycheck-checkpatch-scripts-directory (&optional checker)
   (and (buffer-file-name)
        (locate-dominating-file (buffer-file-name)
-                               flycheck-scripts-directory)))
+                               flycheck-checkpatch-scripts-directory)))
 
 (defun flycheck-checkpatch-set-executable ()
   (when-let ((directory (flycheck-checkpatch-scripts-directory)))
     (setq-local flycheck-checkpatch-executable
-		(concat directory flycheck-scripts-directory "/checkpatch.pl"))))
+		(concat directory flycheck-checkpatch-scripts-directory "/checkpatch.pl"))))
 
 (flycheck-define-checker checkpatch
   "The Linux kernel (or qemu) checkpatch.pl checker"
