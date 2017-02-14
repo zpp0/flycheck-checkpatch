@@ -6,7 +6,7 @@
 ;; Maintainer: Alexander Yarygin <yarygin.alexander@gmail.com>
 ;; Version: 0.1
 ;; Homepage: https://github.com/zpp0/flycheck-checkpatch
-;; Package-Requires: ((emacs "25"))
+;; Package-Requires: ((emacs "25") (flycheck "30"))
 
 ;; This file is not part of GNU Emacs.
 
