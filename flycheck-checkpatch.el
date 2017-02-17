@@ -1,4 +1,4 @@
-;;; flycheck-checkpatch.el --- Flyckeck support for checkpatch.pl tool
+;;; flycheck-checkpatch.el --- Flycheck support for checkpatch.pl tool
 
 ;; Copyright (c) 2016 Alexander Yarygin <yarygin.alexander@gmail.com>
 
