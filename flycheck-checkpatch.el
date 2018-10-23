@@ -63,7 +63,7 @@
 ;;;###autoload
 (defun flycheck-checkpatch-setup ()
   "Setup Flycheck checkpatch."
-  (add-to-list 'flycheck-checkers 'checkpatch)
+  (add-to-list 'flycheck-checkers 'checkpatch t)
   (add-hook 'flycheck-mode-hook #'flycheck-checkpatch-set-executable))
 
 (provide 'flycheck-checkpatch)
