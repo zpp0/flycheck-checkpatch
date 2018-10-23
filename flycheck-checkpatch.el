@@ -42,8 +42,10 @@
 
 (defun flycheck-checkpatch-scripts-directory (&optional checker)
   (and (buffer-file-name)
-       (locate-dominating-file (buffer-file-name)
-                               flycheck-checkpatch-scripts-directory)))
+       (when-let ((directory (locate-dominating-file
+			      (buffer-file-name)
+			      flycheck-checkpatch-scripts-directory)))
+	 (expand-file-name directory))))
 
 (defun flycheck-checkpatch-set-executable ()
   (when-let ((directory
