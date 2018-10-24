@@ -55,6 +55,12 @@
     (setq-local flycheck-checkpatch-code-executable executable)
     (setq-local flycheck-checkpatch-patch-executable executable)))
 
+(defun flycheck-checkers-support-major-mode (checkers mode)
+  "CHECKERS that support a given major MODE."
+  (seq-filter
+   (lambda (checker) (flycheck-checker-supports-major-mode-p checker mode))
+   checkers))
+
 (flycheck-define-checker checkpatch-code
   "The Linux kernel (or qemu) checkpatch.pl checker for source files"
   :command ("checkpatch.pl" "--terse" "-f" source)
@@ -80,7 +86,12 @@
   "Setup Flycheck checkpatch."
   (add-to-list 'flycheck-checkers 'checkpatch-code t)
   (add-to-list 'flycheck-checkers 'checkpatch-patch t)
-  (add-hook 'flycheck-mode-hook #'flycheck-checkpatch-set-executable))
+  (add-hook 'flycheck-mode-hook #'flycheck-checkpatch-set-executable)
+
+  ;; Chain checkpatch to c-mode checkers
+  (let ((checkers (flycheck-checkers-support-major-mode flycheck-checkers 'c-mode)))
+    (dolist (checker checkers)
+      (flycheck-add-next-checker checker 'checkpatch-code))))
 
 (provide 'flycheck-checkpatch)
 ;;; flycheck-checkpatch.el ends here
