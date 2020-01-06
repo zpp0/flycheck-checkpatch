@@ -86,12 +86,7 @@
   "Setup Flycheck checkpatch."
   (add-to-list 'flycheck-checkers 'checkpatch-code t)
   (add-to-list 'flycheck-checkers 'checkpatch-patch t)
-  (add-hook 'flycheck-mode-hook #'flycheck-checkpatch-set-executable)
-
-  ;; Chain checkpatch to c-mode checkers
-  (let ((checkers (flycheck-checkers-support-major-mode flycheck-checkers 'c-mode)))
-    (dolist (checker checkers)
-      (flycheck-add-next-checker checker 'checkpatch-code))))
+  (add-hook 'flycheck-mode-hook #'flycheck-checkpatch-set-executable))
 
 (provide 'flycheck-checkpatch)
 ;;; flycheck-checkpatch.el ends here
