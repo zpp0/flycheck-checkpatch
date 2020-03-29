@@ -42,16 +42,27 @@
 
 (defun flycheck-checkpatch-scripts-directory (&optional checker)
   (and (buffer-file-name)
-       (locate-dominating-file (buffer-file-name)
-                               flycheck-checkpatch-scripts-directory)))
+       (when-let ((directory (locate-dominating-file
+			      (buffer-file-name)
+			      flycheck-checkpatch-scripts-directory)))
+	 (expand-file-name directory))))
 
 (defun flycheck-checkpatch-set-executable ()
-  (when-let ((directory (flycheck-checkpatch-scripts-directory)))
-    (setq-local flycheck-checkpatch-executable
-		(concat directory flycheck-checkpatch-scripts-directory "/checkpatch.pl"))))
+  (when-let ((directory
+	      (flycheck-checkpatch-scripts-directory))
+	     (executable
+	      (concat directory flycheck-checkpatch-scripts-directory "/checkpatch.pl")))
+    (setq-local flycheck-checkpatch-code-executable executable)
+    (setq-local flycheck-checkpatch-patch-executable executable)))
 
-(flycheck-define-checker checkpatch
-  "The Linux kernel (or qemu) checkpatch.pl checker"
+(defun flycheck-checkers-support-major-mode (checkers mode)
+  "CHECKERS that support a given major MODE."
+  (seq-filter
+   (lambda (checker) (flycheck-checker-supports-major-mode-p checker mode))
+   checkers))
+
+(flycheck-define-checker checkpatch-code
+  "The Linux kernel (or qemu) checkpatch.pl checker for source files"
   :command ("checkpatch.pl" "--terse" "-f" source)
   :error-patterns
   ((warning line-start (file-name) ":" line ": WARNING: " (message) line-end)
@@ -60,10 +71,21 @@
   :working-directory flycheck-checkpatch-scripts-directory
   :predicate flycheck-checkpatch-scripts-directory)
 
+(flycheck-define-checker checkpatch-patch
+  "The Linux kernel (or qemu) checkpatch.pl checker for patches"
+  :command ("checkpatch.pl" "--terse" source)
+  :error-patterns
+  ((warning line-start (file-name) ":" line ": WARNING: " (message) line-end)
+   (error line-start (file-name) ":" line ": ERROR: " (message) line-end))
+  :modes (diff-mode)
+  :working-directory flycheck-checkpatch-scripts-directory
+  :predicate flycheck-checkpatch-scripts-directory)
+
 ;;;###autoload
 (defun flycheck-checkpatch-setup ()
   "Setup Flycheck checkpatch."
-  (add-to-list 'flycheck-checkers 'checkpatch)
+  (add-to-list 'flycheck-checkers 'checkpatch-code t)
+  (add-to-list 'flycheck-checkers 'checkpatch-patch t)
   (add-hook 'flycheck-mode-hook #'flycheck-checkpatch-set-executable))
 
 (provide 'flycheck-checkpatch)
