@@ -61,7 +61,7 @@
   :error-patterns
   ((warning line-start (file-name) ":" line ": WARNING: " (message) line-end)
    (error line-start (file-name) ":" line ": ERROR: " (message) line-end))
-  :modes (c-mode)
+  :modes (c-mode c-ts-mode)
   :working-directory flycheck-checkpatch-scripts-directory
   :predicate flycheck-checkpatch-scripts-directory)
 
